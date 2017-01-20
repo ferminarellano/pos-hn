@@ -1,59 +1,88 @@
 <odoo>
-  <data>
-    <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="pos_hn.list">
-      <field name="name">pos_hn list</field>
-      <field name="model">pos_hn.pos_hn</field>
-      <field name="arch" type="xml">
-        <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
-        </tree>
-      </field>
-    </record>
-    -->
+    <data>
 
-    <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="pos_hn.action_window">
-      <field name="name">pos_hn window</field>
-      <field name="res_model">pos_hn.pos_hn</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    -->
+        <record model="ir.ui.view" id="poshn_cai_tree_view">
+            <field name="name">Listado de Códigos de Autorización de Impresión</field>
+            <field name="model">poshn.cai</field>
+            <field name="arch" type="xml">
+                <tree string="Codigo de Autorizacion de Impresion">
+                    <field name="codigo_cai"/>
+                    <field name="fecha_limite_emision"/>
+                    <field name="rango_autorizado_desde"/>
+                    <field name="rango_autorizado_hasta"/>
+                    <field name="activo"/>
+                </tree>
+            </field>
+        </record>
 
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="pos_hn.action_server">
-      <field name="name">pos_hn server</field>
-      <field name="model_id" ref="model_pos_hn_pos_hn"/>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
-      </field>
-    </record>
-    -->
+        <record model="ir.ui.view" id="poshn_cai_form_view">
+            <field name="name">Formulario de Códigos de Autorización de Impresión</field>
+            <field name="model">poshn.cai</field>
+            <field name="arch" type="xml">
+                <form string="Idea form">
+                    <group colspan="4">
+                        <group colspan="2" col="2">
+                            <separator string="General stuff" colspan="2"/>
+                            <field name="codigo_cai"/>
+                            <field name="fecha_limite_emision"/>
+                        </group>
 
-    <!-- Top menu item -->
-    <!--
-    <menuitem name="pos_hn" id="pos_hn.menu_root"/>
-    -->
-    <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="pos_hn.menu_1" parent="pos_hn.menu_root"/>
-    <menuitem name="Menu 2" id="pos_hn.menu_2" parent="pos_hn.menu_root"/>
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="pos_hn.menu_1_list" parent="pos_hn.menu_1"
-              action="pos_hn.action_window"/>
-    <menuitem name="Server to list" id="pos_hn" parent="pos_hn.menu_2"
-              action="pos_hn.action_server"/>
-    -->
+                        <group colspan="2" col="2">
+                           <separator string="Rango Autorizado" colspan="2"/>
+                           <field name="rango_autorizado_desde"/>
+                           <field name="rango_autorizado_hasta"/>
+                        </group>
+
+                        <notebook colspan="4">
+                            <page string="Activo">
+                                <field name="activo"/>
+                            </page>
+                        </notebook>
+                  </group>
+              </form>
+            </field>
+        </record>
+
+        <record id="poshn_cai_action_id" model="ir.actions.act_window">
+            <field name="name">Código de Autorización de Impresión</field>
+            <field name="res_model">poshn.cai</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Código de Autorización de Impresión" id="poshn_cai_menu_id" sequence="10" parent="point_of_sale.menu_point_config_product" action="poshn_cai_action_id"/>
+
+        <record id="view_sequence_form_inherited" model="ir.ui.view">
+
+			<field name="name">ir.sequence.form.inherited</field>
+			<field name="model">ir.sequence</field>
+			<field name="inherit_id" ref="base.sequence_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//page[last()]" position="after">
+					<page string="Regimen DEI">
+						<group col="4">
+							<field name="regimen_aplicado" />
+							<field name="punto_emision" />
+							<field name="establecimiento" />
+							<field name="tipo_documento" />
+							<field name="rango_desde" />
+							<field name="rango_hasta" />
+						</group>
+					</page>
+				</xpath>
+			</field>
+
+		</record>
+
+        <record id="view_pos_config_form_inherited" model="ir.ui.view">
+			<field name="name">pos.config.form.inherited</field>
+			<field name="model">pos.config</field>
+			<field name="inherit_id" ref="point_of_sale.view_pos_config_form" />
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='sequence_id']" position="replace">
+					<field name="sequence_id" groups="base.group_no_one" />
+				</xpath>
+			</field>
+		</record>
+        
   </data>
 </odoo>

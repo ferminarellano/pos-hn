@@ -33,3 +33,4 @@ class pos_config(models.Model):
 	_inherit = 'pos.config'
 
 	sequence_id = fields.Many2one(readonly=False)
+	default_client = fields.Many2one(comodel_name = "res.partner", domain="[('customer','=',True)]", string="Cliente por Defecto")

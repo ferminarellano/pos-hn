@@ -7,6 +7,7 @@
                 <div class="pos-center-align"><t t-esc="widget.pos.company.city"/>, <t t-esc="widget.pos.company.state_id[1]"/></div>
 				<div class="pos-center-align"><b>RTN: <t t-esc="widget.pos.company.vat" /></b></div>
 				<div class="pos-center-align">Teléfono: <t t-esc="widget.pos.company.phone" /></div>
+				<div class="pos-center-align">Correo: <t t-esc="widget.pos.company.email" /></div>
 				<br />
 				<div >CAI: <t t-esc="widget.pos.config_cai.codigo_cai" /></div>
 				<div>FACTURA: <t t-esc="order.name"/></div>
@@ -27,6 +28,11 @@
                     <col width='25%' />
                     <col width='25%' />
                 </colgroup>
+				<tr>
+					<td style="padding-bottom: 0.5em;"><b>Descripción</b></td>
+					<td style="padding-bottom: 0.5em;" class="pos-right-align"><b>Cant/Unid</b></td>
+					<td style="padding-bottom: 0.5em;" class="pos-right-align"><b>Total</b></td>
+				</tr>
                 <tr t-foreach="orderlines" t-as="orderline">
                     <td>
                         <t t-esc="orderline.get_product().display_name"/>
@@ -43,6 +49,7 @@
                         <t t-esc="widget.format_currency(orderline.get_display_price())"/>
                     </td>
                 </tr>
+				<tr class="pos-center-align"><td colspan="3" style="padding-top:0.75em;"><b>---- Última línea ----</b></td></tr>
             </table>
             <br />
             <table class='receipt-total'>
@@ -66,14 +73,16 @@
                         <t t-esc="widget.format_currency(order.get_total_discount())"/>
                     </td>
                 </tr>
+				<br />
                 <tr class="emph">
                     <td>Total:</td>
                     <td class="pos-right-align">
                         <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
                     </td>
                 </tr>
+				
             </table>
-            <br />
+            
             <table class='receipt-paymentlines'>
                 <t t-foreach="paymentlines" t-as="line">
                   <tr>
@@ -86,12 +95,22 @@
                   </tr>
                 </t>
             </table>
-            <br />
+            
             <table class='receipt-change'>
                 <tr><td>Change:</td><td class="pos-right-align">
                     <t t-esc="widget.format_currency(order.get_change())"/>
                     </td></tr>
             </table>
+			
+			<br />
+			<table class='receipt-change'>
+				<tr class="pos-center-align">
+                    <td class="" colspan="2">
+                        <t t-esc="order.get_amount_in_words()"/>
+                    </td>
+                </tr>
+            </table>
+			
             <t t-if="receipt.footer">
                 <br />
                 <div style='text-align:center'>
@@ -105,6 +124,34 @@
 		  </div>
         </div>
 
+		</t>
+	</t>
+
+	<t t-extend="OrderSelectorWidget">
+		<t t-jquery=".order-selector" t-operation="replace">
+			<div class="order-selector">
+				<span class="orders touch-scrollable">
+
+					<t t-foreach="widget.pos.get_order_list()" t-as="order">
+						<t t-if='order === widget.pos.get_order()'>
+							<span class="order-button select-order selected" t-att-data-uid="order.uid">
+								<span class='order-sequence'>
+									<t t-esc='order.sequence_number' />
+								</span>
+								<t t-esc="moment(order.creation_date).format('hh:mm')"/>
+							</span>
+						</t>
+						<t t-if='order !== widget.pos.get_order()'>
+							<span class="order-button select-order" t-att-data-uid="order.uid">
+								<span class='order-sequence'>
+									<t t-esc='order.sequence_number' />
+								</span>
+							</span>
+						</t>
+					</t>
+				</span>
+				
+			</div>
 		</t>
 	</t>
 </templates>

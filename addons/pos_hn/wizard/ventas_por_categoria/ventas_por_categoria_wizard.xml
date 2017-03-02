@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<openerp>
+	<data>
+		<record id="reporte_ventas_por_categoria_wizard" model="ir.ui.view">
+            <field name="name">Reporte de Ventas por Categoria</field>
+            <field name="model">sales.category.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Reporte de Entradas y Salidas">
+					<group col="4" string="Fechas">
+						<field name="fecha_inicio"/>
+						<field name="fecha_final"/>
+                    </group>
+                    
+                    <footer>
+                        <button name="print_report" type="object" string="Descargar" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_report_sales_category_wizard" model="ir.actions.act_window">
+            <field name="name">Reporte de Ventas por Categoria</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sales.category.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record> 
+		
+		<menuitem action="action_report_sales_category_wizard" id="sales_category_report_menu_id" parent="point_of_sale.menu_point_rep" sequence="6" />
+		
+	</data>
+</openerp>

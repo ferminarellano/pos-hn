@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+
+<openerp>
+	<data>
+		
+		<report
+			id="report_reporte_ventas_por_categoria"
+			string="Reporte de Ventas por Categoria"
+			model="pos.order"
+			report_type="qweb-pdf"
+			name="pos_hn.report_reporte_ventas_por_categoria_tplt"
+		/>
+		
+		<record id="paperformat_reporte_ventas_por_categoria_id" model="report.paperformat">
+          <field name="name">Reporte de Ventas por Categoria</field>
+          <field name="format">Letter</field>
+          <field name="orientation">Landscape</field>
+          <field name="margin_top">20</field>
+          <field name="margin_bottom">20</field>
+          <field name="margin_left">7</field>
+          <field name="margin_right">7</field>
+          <field name="header_spacing">5</field>
+          <field name="dpi">90</field>
+          <field name="report_ids" eval="[(6, 0, [ref('report_reporte_ventas_por_categoria')])]"/>
+       </record>
+	   
+	   <template id="report_reporte_ventas_por_categoria_tplt">
+			<t t-call="report.html_container">
+					<div class="page">
+						<link rel="stylesheet" href="/pos_hn/static/src/css/reports.css"/>
+						
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="text-center company-name"><span t-esc="data['company_name']"/></div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-12">
+									<div class="text-center report-name"><span t-esc="data['report_name']"/></div>
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-xs-6">
+									<div class="row">
+										<div class="col-xs-12">
+											<b>Fecha desde:</b> <span t-esc="data['fecha_inicio']"/>
+										</div>
+									</div>
+									
+									<div class="row">
+										<div class="col-xs-12">
+											<b>Fecha hasta:</b> <span t-esc="data['fecha_final']"/>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-xs-6">
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="text-right"><b>Fecha:</b> <t t-esc="data['fecha_actual']"/></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="text-right"><b>Hora:</b> <t t-esc="data['hora_actual']"/></div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="text-right"><b>Usuario:</b> <t t-esc="data['usuario']"/></div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							
+							<div class="row">
+								<div class="col-md-12">
+									<div class="table-container">
+										<table class="table table-condensed">
+											<thead>
+											<tr>
+												<th colspan="2">Categoria</th>
+												<th colspan="1">Cantidad</th>
+												<th colspan="1">Monto Bruto</th>
+												<th colspan="1">Descuentos</th>
+												<th colspan="1">ISV (15%)</th>
+												<th colspan="1">Costo</th>
+												<th colspan="1">Utilidad</th>
+												<th colspan="1">% Utilidad</th>
+												<th colspan="1">% Ventas</th>
+											</tr>
+											</thead>
+											
+											<tbody>
+											<tr t-foreach="data['categories']" t-as="category">
+												<td colspan="1"><span t-esc="category['parent']"/></td>
+												<td colspan="1"><span t-esc="category['name']"/></td>
+												<td colspan="1" align="right"><span t-esc="category['qty']"/></td>
+												<td colspan="1" align="right"><span t-esc="'{0:,.2f}'.format(category['monto_bruto'])"/>  </td>
+												<td colspan="1" align="right"><span t-esc="'{0:,.2f}'.format(category['descuento'])"/></td>
+												<td colspan="1" align="right"><span t-esc="'{0:,.2f}'.format(category['isv'])"/></td>
+												<td colspan="1" align="right"><span t-esc="'{0:,.2f}'.format(category['costo'])"/></td>
+												<td colspan="1" align="right"><span t-esc="'{0:,.2f}'.format(category['utilidad'])"/></td>
+												<td colspan="1" align="right"><span t-esc="'{0:,.2f}'.format(category['pc_utilidad'])"/>%</td>
+												<td colspan="1" align="right"><span t-esc="'{0:,.2f}'.format(category['pc_ventas'])"/>%</td>
+											</tr>
+											</tbody>
+											
+											<tfoot>
+											<tr>
+												<td colspan="2" align="right"><b>TOTAL:</b></td>
+												<td colspan="1" align="right"><b><span t-esc="data['totales']['total_cantidad']"/></b></td>
+												<td colspan="1" align="right"><b><span t-esc="'{0:,.2f}'.format(data['totales']['total_bruto'])"/></b></td>
+												<td colspan="1" align="right"><b><span t-esc="'{0:,.2f}'.format(data['totales']['total_descuento'])"/></b></td>
+												<td colspan="1" align="right"><b><span t-esc="'{0:,.2f}'.format(data['totales']['total_isv'])"/></b></td>
+												<td colspan="1" align="right"><b><span t-esc="'{0:,.2f}'.format(data['totales']['total_costo'])"/></b></td>
+												<td colspan="1" align="right"><b><span t-esc="'{0:,.2f}'.format(data['totales']['total_utilidad'])"/></b></td>
+												<td colspan="1" align="right"><b><span t-esc="'{0:,.2f}'.format(data['totales']['total_pc_utilidad'])"/>%</b></td>
+												<td colspan="1" align="right"><b><span t-esc="'{0:,.2f}'.format(data['totales']['total_pc_ventas'])"/>%</b></td>
+											</tr>
+											</tfoot>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+					</div>
+			</t>
+		</template>
+		
+	</data>
+</openerp>

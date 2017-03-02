@@ -15,6 +15,8 @@
     'version': '0.1',
     'depends': ['point_of_sale'],
     'data': [
+		'report/ventas_por_categoria/ventas_por_categoria.xml',
+		'wizard/ventas_por_categoria/ventas_por_categoria_wizard.xml',
         'views/views.xml',
         'views/templates.xml',
         'data.xml'

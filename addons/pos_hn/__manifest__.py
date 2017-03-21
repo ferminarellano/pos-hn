@@ -16,7 +16,10 @@
     'depends': ['point_of_sale'],
     'data': [
 		'report/ventas_por_categoria/ventas_por_categoria.xml',
+		'report/pos_order_reprint/pos_order_reprint.xml',
+		'report/product_label/product_label.xml',
 		'wizard/ventas_por_categoria/ventas_por_categoria_wizard.xml',
+		'wizard/product_label/product_label_wizard.xml',
         'views/views.xml',
         'views/templates.xml',
         'data.xml'

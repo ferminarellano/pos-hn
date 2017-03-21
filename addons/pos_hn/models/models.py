@@ -34,3 +34,20 @@ class pos_config(models.Model):
 
 	sequence_id = fields.Many2one(readonly=False)
 	default_client = fields.Many2one(comodel_name = "res.partner", domain="[('customer','=',True)]", string="Cliente por Defecto")
+	cai = fields.Many2one(comodel_name="poshn.cai", string="CAI")
+	
+class pos_order(models.Model):
+	_name = 'pos.order'
+	_inherit = 'pos.order'
+	
+	def _force_picking_done(self, picking):
+		self.ensure_one()
+		picking.action_confirm()
+		picking.force_assign()
+		self.set_pack_operation_lot(picking)
+		picking.message_post(body="Esto es antes del if")
+		if not any([(x.product_id.tracking not in ['none','serial']) for x in picking.pack_operation_ids]):
+			picking.message_post(body="Esto es dentro del if")
+			picking.action_done()
+	
+	

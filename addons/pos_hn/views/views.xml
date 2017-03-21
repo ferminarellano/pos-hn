@@ -83,6 +83,10 @@
 				</xpath>
 				
 				<xpath expr="//field[@name='active']" position="after">
+					<field name="cai"/>
+				</xpath>
+				
+				<xpath expr="//field[@name='active']" position="after">
 					<field name="default_client"/>
 				</xpath>
 				

@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+
+<openerp>
+	<data>
+
+		<report
+			id="report_reporte_pos_order_reprint"
+			string="Reimpresion de Ticket"
+			model="pos.order"
+			report_type="qweb-pdf"
+			name="pos_hn.report_reporte_pos_order_reprint_tplt"
+		/>
+		
+		<record id="paperformat_reporte_pos_order_reprint_id" model="report.paperformat">
+          <field name="name">Reimpresion de Ticket</field>
+          <field name="format">Letter</field>
+          <field name="orientation">Portrait</field>
+          <field name="margin_top">0</field>
+          <field name="margin_bottom">0</field>
+          <field name="margin_left">0</field>
+          <field name="margin_right">0</field>
+          <field name="header_spacing">0</field>
+          <field name="dpi">90</field>
+          <field name="report_ids" eval="[(6, 0, [ref('report_reporte_pos_order_reprint')])]"/>
+       </record>
+
+		<template id="report_reporte_pos_order_reprint_tplt">
+			<div class="page">
+				<link rel="stylesheet" href="/pos_hn/static/src/css/reports.css"/>
+				<t t-foreach="docs" t-as="o">
+					<div class="pos">
+						<div class="pos-receipt-container">
+						<div class="pos-sale-ticket">
+							<table>
+								<tr class="pos-center-align"><td><span t-field="o.company_id.name" /></td></tr>
+								<tr class="pos-center-align"><td><span t-field="o.company_id.street" />, <span t-field="o.company_id.street2" /></td></tr>
+								<tr class="pos-center-align"><td><span t-field="o.company_id.city" />, <span t-field="o.company_id.state_id.name" /></td></tr>
+								<tr class="pos-center-align"><td>RTN: <span t-field="o.company_id.vat" /></td></tr>
+								<tr class="pos-center-align"><td>Teléfono: <span t-field="o.company_id.phone" /></td></tr>
+								<tr class="pos-center-align"><td>Correo: <span t-field="o.company_id.email" /></td></tr>
+							</table>
+							
+							<br />
+							
+							<table>
+								<tr><td>CAI: <span t-field="o.session_id.config_id.cai.codigo_cai" /></td></tr>
+								<tr><td>FACTURA: <span t-field="o.pos_reference"/></td></tr>
+								<tr><td>FECHA: <span t-esc="order_date(o.date_order)"/></td></tr>
+								<tr><td>CAJERO: <span t-field="o.user_id.name"/></td></tr>
+								<tr><td>CLIENTE: <span t-field="o.partner_id.name"/></td></tr>
+								<tr><td>RTN: <span t-field="o.partner_id.vat"/></td></tr>
+							</table>
+
+							<br />
+					
+							<table class='receipt-orderlines'>
+								<colgroup>
+									<col width='50%' />
+									<col width='25%' />
+									<col width='25%' />
+								</colgroup>
+								<tr>
+									<td style="padding-bottom: 0.5em;">Descripción</td>
+									<td style="padding-bottom: 0.5em;" class="pos-right-align">Cant/Unid</td>
+									<td style="padding-bottom: 0.5em;" class="pos-right-align">Total</td>
+								</tr>
+								<tr t-foreach="o.lines" t-as="orderline">
+									<td>
+										<span t-field="orderline.product_id.product_tmpl_id.name"/>
+										 <t t-if="orderline.discount > 0">
+											<div class="pos-disc-font">
+												Con un descuento del <span t-field="orderline.discount"/>%
+											</div>
+										</t>
+									</td>
+									<td class="pos-right-align">
+										<span t-field="orderline.qty"/>
+									</td>
+									<td class="pos-right-align">
+										<span t-esc="money(orderline.price_unit)"/>
+									</td>
+								</tr>
+								<tr class="pos-center-align">
+									<td colspan="3" style="padding-top:0.75em;">---- Última línea ----</td>
+								</tr>
+							</table>
+							<br />
+							<table class='receipt-total'>
+								<tr>
+									<td>Subtotal:</td>
+									<td class="pos-right-align">
+										<t t-esc="money(get_total_without_tax(o))"/>
+									</td>
+								</tr>
+								<t t-foreach="get_tax_details(o)" t-as="taxdetail">
+									<tr>
+										<td><t t-esc="taxdetail['name']" /></td>
+										<td class="pos-right-align">
+											<t t-esc="taxdetail['amount']" />
+										</td>
+									</tr>
+								</t>
+								<tr>
+									<td>Descuento:</td>
+									<td class="pos-right-align">
+										<t t-esc="get_total_discount(o)"/>
+									</td>
+								</tr>
+								<tr class="emph">
+									<td>Total:</td>
+									<td class="pos-right-align">
+										<t t-esc="money(o.amount_total)"/>
+									</td>
+								</tr>
+							</table>
+							
+							<table class='receipt-paymentlines'>
+								<t t-foreach="get_payment_lines(o)" t-as="line">
+								  <tr>
+									  <td>
+										  <t t-esc="line['name']"/>
+									  </td>
+									  <td class="pos-right-align">
+										  <t t-esc="line['amount']"/>
+									  </td>
+								  </tr>
+								</t>
+							</table>
+							
+							<table>
+								<tr>
+									<td>Cambio:</td>
+									<td class="pos-right-align">
+										<t t-esc="get_change(o)"/>
+									</td>
+								</tr>
+							</table>
+							
+							<br />
+							<table class='receipt-change'>
+								<tr class="pos-center-align">
+									<td class="" colspan="2">
+										<t t-esc="get_amount_in_words(o.amount_total)"/>
+									</td>
+								</tr>
+							</table>
+							
+							<br />
+							<table>
+								<tr class="pos-center-align"><td>Fecha límite de emisión: <span t-esc="get_fecha_limite_emision(o)"/></td></tr>
+								<tr class="pos-center-align"><td>Rango autorizado:</td></tr>
+								<tr class="pos-center-align"><td><span t-esc="to_int(o.session_id.config_id.cai.rango_autorizado_desde)"/> al <span t-esc="to_int(o.session_id.config_id.cai.rango_autorizado_hasta)"/></td></tr>
+							</table>
+							
+							<br />
+							
+							<table>
+								<tr class="pos-center-align"><td>- - - - - - - - - - - - - - - - - - - - -</td></tr>
+							</table>
+						</div>
+						</div>
+					</div>
+				</t>
+			</div>
+		</template>
+
+	</data>
+</openerp>

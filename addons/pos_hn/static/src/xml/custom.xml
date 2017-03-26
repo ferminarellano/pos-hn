@@ -22,19 +22,14 @@
                 </div>
                 <br />
             </t>
-            <table class='receipt-orderlines'>
-                <colgroup>
-                    <col width='50%' />
-                    <col width='25%' />
-                    <col width='25%' />
-                </colgroup>
+            <table class='receipt-orderlines' style="table-layout:auto;">
 				<tr>
 					<td style="padding-bottom: 0.5em;"><b>Descripción</b></td>
 					<td style="padding-bottom: 0.5em;" class="pos-right-align"><b>Cant/Unid</b></td>
 					<td style="padding-bottom: 0.5em;" class="pos-right-align"><b>Total</b></td>
 				</tr>
                 <tr t-foreach="orderlines" t-as="orderline">
-                    <td>
+                    <td style="padding-bottom:7px;">
                         <t t-esc="orderline.get_product().display_name"/>
                          <t t-if="orderline.get_discount() > 0">
                             <div class="pos-disc-font">
@@ -45,9 +40,20 @@
                     <td class="pos-right-align">
                         <t t-esc="orderline.get_quantity_str_with_unit()"/>
                     </td>
-                    <td class="pos-right-align">
-                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                    <td class="pos-right-align" style="white-space: nowrap;">
+                        <span style="padding-left: 10px;"><t t-esc="widget.format_currency(orderline.get_display_price())"/></span>
                     </td>
+					
+					<t t-if="orderline.has_product_lot">
+						<t t-foreach="orderline.pack_lot_lines.models" t-as="packlot">
+							<tr>
+								<td colspan="3" align="left">
+									<div style="font-style: italic;color:gray;font-size: 90%; margin-top:-3px; margin-bottom:3px; padding-left:15px;"><t t-esc="packlot.get_lot_name()"/></div>
+								</td>
+							</tr>
+						</t>
+					</t>
+					
                 </tr>
 				<tr class="pos-center-align"><td colspan="3" style="padding-top:0.75em;"><b>---- Última línea ----</b></td></tr>
             </table>

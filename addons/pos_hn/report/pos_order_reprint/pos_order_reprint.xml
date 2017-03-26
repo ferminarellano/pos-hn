@@ -53,19 +53,14 @@
 
 							<br />
 					
-							<table class='receipt-orderlines'>
-								<colgroup>
-									<col width='50%' />
-									<col width='25%' />
-									<col width='25%' />
-								</colgroup>
+							<table class='receipt-orderlines' style="table-layout:auto;">
 								<tr>
 									<td style="padding-bottom: 0.5em;">Descripción</td>
 									<td style="padding-bottom: 0.5em;" class="pos-right-align">Cant/Unid</td>
 									<td style="padding-bottom: 0.5em;" class="pos-right-align">Total</td>
 								</tr>
 								<tr t-foreach="o.lines" t-as="orderline">
-									<td>
+									<td style="padding-bottom:7px;">
 										<span t-field="orderline.product_id.product_tmpl_id.name"/>
 										 <t t-if="orderline.discount > 0">
 											<div class="pos-disc-font">
@@ -76,9 +71,20 @@
 									<td class="pos-right-align">
 										<span t-field="orderline.qty"/>
 									</td>
-									<td class="pos-right-align">
+									<td class="pos-right-align" style="white-space: nowrap;">
 										<span t-esc="money(orderline.price_unit)"/>
 									</td>
+									
+									<t t-if="orderline.pack_lot_ids">
+										<t t-foreach="orderline.pack_lot_ids" t-as="packlot">
+											<tr>
+												<td colspan="3" align="left">
+													<div style="font-style: italic;color:gray;font-size: 90%; margin-top:-3px; margin-bottom:3px; padding-left:15px;"><t t-esc="packlot.lot_name"/></div>
+												</td>
+											</tr>
+										</t>
+									</t>
+					
 								</tr>
 								<tr class="pos-center-align">
 									<td colspan="3" style="padding-top:0.75em;">---- Última línea ----</td>
@@ -150,6 +156,12 @@
 								<tr class="pos-center-align"><td>Fecha límite de emisión: <span t-esc="get_fecha_limite_emision(o)"/></td></tr>
 								<tr class="pos-center-align"><td>Rango autorizado:</td></tr>
 								<tr class="pos-center-align"><td><span t-esc="to_int(o.session_id.config_id.cai.rango_autorizado_desde)"/> al <span t-esc="to_int(o.session_id.config_id.cai.rango_autorizado_hasta)"/></td></tr>
+							</table>
+							
+							<br />
+							
+							<table>
+								<tr class="pos-center-align"><td>-  R E I M P R E S I O N  -</td></tr>
 							</table>
 							
 							<br />

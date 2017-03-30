@@ -160,4 +160,49 @@
 			</div>
 		</t>
 	</t>
+	
+	<t t-extend="PackLotLinePopupWidget">
+		<t t-jquery=".modal-dialog" t-operation="replace">
+		
+			<div class="modal-dialog">
+				<div class="popup popup-text">
+					<p class="title"><t t-esc=" widget.options.title || '' " /></p>
+					<div class='packlot-lines'>
+						<t t-if="widget.options.pack_lot_lines">
+							<t t-set="focus_lot_line" t-value="widget.focus_model || widget.options.pack_lot_lines.get_empty_model()"/>
+							
+							<t t-foreach='widget.options.pack_lot_lines.models' t-as='lot_line'>
+								<input type="text" t-att-cid="lot_line.cid"
+									t-att-value="lot_line.get('lot_name')"
+									t-att-autofocus="lot_line === focus_lot_line ? 'autofocus': undefined"
+									class="popup-input packlot-line-input"
+									placeholder="Serial/Lot Number"/>
+								<i class="oe_link_icon remove-lot fa fa-trash-o"></i>
+								
+								<select class="serial-lot-select">
+									<t t-foreach="widget.options.product_available_serial_numbers" t-as="serial_number">
+										<option class='selection-item' t-att-data-item-index='serial_number_index'>
+											<t t-esc='serial_number.name'/>
+										</option>
+									</t>
+								</select>
+							
+							</t>
+							
+						</t>
+					</div>
+					<div class="footer">
+						<div class="button confirm">
+							Ok
+						</div>
+						<div class="button cancel">
+							Cancel
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			
+		</t>
+	</t>
 </templates>

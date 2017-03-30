@@ -45,9 +45,7 @@ class pos_order(models.Model):
 		picking.action_confirm()
 		picking.force_assign()
 		self.set_pack_operation_lot(picking)
-		picking.message_post(body="Esto es antes del if")
 		if not any([(x.product_id.tracking not in ['none','serial']) for x in picking.pack_operation_ids]):
-			picking.message_post(body="Esto es dentro del if")
 			picking.action_done()
 	
 	

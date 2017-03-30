@@ -10,6 +10,7 @@ odoo.define('pos_hn.update_company_fields', function(require){
             model.fields.push('street','street2','city','state_id');
         }
     }
+	
     module.load_models([{
         model: 'poshn.cai',
         condition: function(self){ return true; },
@@ -36,12 +37,35 @@ odoo.define('pos_hn.update_company_fields', function(require){
                self.dei_sequence.number_next = Math.max(self.dei_sequence.number_next, orders[i].data.sequence_number+1);
             }
         }
-    }]);
+    },
+	{
+		model: 'stock.quant',
+		fields: ['id','lot_id','product_id','location_id'],
+		domain: function(self){return [['lot_id','!=',false], ['location_id','=', self.shop.id]];},
+		loaded: function(self, quants){
+			self.available_lots_ids = quants.map(function (quant) { 
+				return quant.lot_id[0];
+			});
+		}
+	},
+	{
+		model: 'stock.production.lot',
+		fields: ['id','product_id','name', 'quant_ids'],
+		domain: function(self){return [['id','in', self.available_lots_ids]];},
+		loaded: function(self, product_lots){
+			self.product_lots = product_lots;
+			console.log(product_lots);
+		}
+	}]);
 });
 
 odoo.define('pos_hn.modify_order_name', function(require){
     "use strict";
 	var gui = require('point_of_sale.gui');
+	var popups = require('point_of_sale.popups');
+	var core = require('web.core');
+	
+	var _t = core._t;
 	
 	gui.Gui.prototype.close = function(){
 		var self = this;
@@ -452,4 +476,32 @@ odoo.define('pos_hn.modify_order_name', function(require){
 		var amount = this.get_total_with_tax();
 		return NumeroALetras(amount);
 	};
+
+	module.Order.prototype.display_lot_popup = function(){
+		var order_line = this.get_selected_orderline();
+        if (order_line){
+            var pack_lot_lines =  order_line.compute_lot_lines();
+			console.log("pack_lot_lines");
+			console.log(pack_lot_lines);
+			
+			var product_id = pack_lot_lines.order_line.product.id;
+			var product_available_serial_numbers = this.pos.product_lots.filter(function (lot) {
+				if(lot.product_id[0] == product_id)
+				{
+					return lot;
+				}
+			});
+			
+            this.pos.gui.show_popup('packlotline', {
+                'title': _t('Lot/Serial Number(s) Required'),
+                'pack_lot_lines': pack_lot_lines,
+                'order': this,
+				'product_available_serial_numbers': product_available_serial_numbers
+            });
+        }
+	};
+	
+	//popups.PackLotLinePopupWidget.prototype
 });
+
+

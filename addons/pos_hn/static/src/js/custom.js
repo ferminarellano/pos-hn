@@ -62,7 +62,7 @@ odoo.define('pos_hn.update_company_fields', function(require){
 odoo.define('pos_hn.modify_order_name', function(require){
     "use strict";
 	var gui = require('point_of_sale.gui');
-	var popups = require('point_of_sale.popups');
+	var popup = require('point_of_sale.popups');
 	var core = require('web.core');
 	
 	var _t = core._t;
@@ -481,9 +481,7 @@ odoo.define('pos_hn.modify_order_name', function(require){
 		var order_line = this.get_selected_orderline();
         if (order_line){
             var pack_lot_lines =  order_line.compute_lot_lines();
-			console.log("pack_lot_lines");
-			console.log(pack_lot_lines);
-			
+
 			var product_id = pack_lot_lines.order_line.product.id;
 			var product_available_serial_numbers = this.pos.product_lots.filter(function (lot) {
 				if(lot.product_id[0] == product_id)
@@ -492,7 +490,10 @@ odoo.define('pos_hn.modify_order_name', function(require){
 				}
 			});
 			
-            this.pos.gui.show_popup('packlotline', {
+			console.log("Llamando: display_lot_popup");
+			console.log(pack_lot_lines);
+			
+            this.pos.gui.show_popup('packlotline-select', {
                 'title': _t('Lot/Serial Number(s) Required'),
                 'pack_lot_lines': pack_lot_lines,
                 'order': this,
@@ -501,7 +502,76 @@ odoo.define('pos_hn.modify_order_name', function(require){
         }
 	};
 	
-	//popups.PackLotLinePopupWidget.prototype
+	var PackLotLinePopupWidgetSelect = popup.extend({
+		template: 'PackLotLinePopupWidget',
+		events: _.extend({}, popup.prototype.events, {
+			'click .remove-lot': 'remove_lot',
+			'blur .serial-lot-select': 'lose_input_focus',
+			'change .serial-lot-select': 'add_lot'
+		}),
+
+		show: function(options){
+			this._super(options);
+			this.focus();
+		},
+
+		click_confirm: function(){
+			var pack_lot_lines = this.options.pack_lot_lines;
+			this.$('.serial-lot-select').each(function(index, el){
+				var cid = $(el).attr('cid');
+				var lot_name = $(el).find("option:selected").text();
+				var pack_line = pack_lot_lines.get({cid: cid});
+				pack_line.set_lot_name(lot_name);
+			});
+			pack_lot_lines.remove_empty_model();
+			pack_lot_lines.set_quantity_by_lot();
+			this.options.order.save_to_db();
+			this.gui.close_popup();
+		},
+
+		add_lot: function(ev) {	
+			var pack_lot_lines = this.options.pack_lot_lines;
+			var $input = $(ev.target);
+			var cid = $input.attr('cid');
+			var lot_name = $(ev.target).find("option:selected").text();
+			
+			var lot_model = pack_lot_lines.get({cid: cid});
+			lot_model.set_lot_name(lot_name); 
+			if(!pack_lot_lines.get_empty_model()){
+				var new_lot_model = lot_model.add();
+				this.focus_model = new_lot_model;
+			}
+			pack_lot_lines.set_quantity_by_lot();
+			
+			console.log(this.options.pack_lot_lines);
+			this.renderElement();
+			this.focus();
+		},
+
+		remove_lot: function(ev){
+			var pack_lot_lines = this.options.pack_lot_lines,
+				$input = $(ev.target).prev(),
+				cid = $input.attr('cid');
+			var lot_model = pack_lot_lines.get({cid: cid});
+			lot_model.remove();
+			pack_lot_lines.set_quantity_by_lot();
+			this.renderElement();
+		},
+
+		lose_input_focus: function(ev){
+			var $input = $(ev.target);
+			var cid = $input.attr('cid');
+			var lot_model = this.options.pack_lot_lines.get({cid: cid});
+			lot_model.set_lot_name($input.find("option:selected").text());
+		},
+
+		focus: function(){
+			this.$("select[autofocus]").focus();
+			this.focus_model = false;   // after focus clear focus_model on widget
+		}
+	});
+	gui.define_popup({name:'packlotline-select', widget:PackLotLinePopupWidgetSelect});
+
 });
 
 

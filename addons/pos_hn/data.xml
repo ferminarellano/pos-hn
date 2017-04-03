@@ -7,6 +7,20 @@
                 <script type="text/javascript" src="/pos_hn/static/src/js/custom.js"></script>
             </xpath>
         </template>
-
+		
+		<record id="generar_codigo_barra_id" model="ir.actions.server">
+		  <field name="name">Generar Código de Barra</field>
+		  <field name="model_id" ref="model_product_product"/>
+		  <field name="state">code</field>
+		  <field name="code">record.compute_barcode()</field>
+		</record>
+	
+		<record id="generar_codigo_barra_asa_id" model="base.action.rule">
+		  <field name="name">Generar Código de Barra</field>
+		  <field name="model_id" ref="model_product_product"/>
+		  <field name="active">1</field>
+		  <field name="kind">on_create</field>
+		  <field name="server_action_ids" eval="[(6,0,[ref('generar_codigo_barra_id')])]"/>
+		</record>
     </data>
 </openerp>

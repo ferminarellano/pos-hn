@@ -30,22 +30,30 @@
 			<t t-call="report.html_container">
 				<t t-foreach="docs" t-as="product">
 				<div class="page">
-					<table>
-						<tr><td><strong t-field="product.name"/></td></tr>
-						<tr>
-							<td>
-								<img t-if="product.barcode" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', product.barcode, 600, 150)" style="width:100%;height:20%;"/>
-								<span t-field="product.barcode"/>
-							</td>
-							<td>
-								<h4>
-									<strong t-field="product.company_id.currency_id.symbol"/>
-									<strong t-field="product.list_price"/>
-								</h4>
-							</td>
-						</tr>
+					<div style="width:100%; padding: 10px 0 10px 0; position:relative;">
 						
-					</table>
+						<div style="text-align:center; margin-bottom:5px;">
+							<strong t-field="product.name"/>
+						</div>
+						
+						<div style="overflow:hidden;">
+							<img t-if="product.barcode" t-att-src="'/report/barcode/?type=Code128&amp;value=%s&amp;width=1200&amp;height=120' % (product.barcode)" style="width:300px;height:30px; zoom:150%; margin-left:-36px"/>
+						</div>
+						
+						<div style="text-align:center; margin-top:-10px; position: absolute; width:100%">
+							<div style="text-align: center; background-color: white; display: inline-block; padding-left: 7px; padding-right: 7px;">
+								<span t-field="product.barcode"/>
+							</div>
+						</div>
+						
+						<div style="text-align:right; margin-top:10px;">
+							<h4 style="padding:0; margin:0;">
+								<strong t-field="product.company_id.currency_id.symbol"/>
+								<strong t-field="product.list_price"/>
+							</h4>
+						</div>
+					</div>
+					
 				</div>
 			</t>
 			</t>

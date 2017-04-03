@@ -103,6 +103,17 @@
 				</xpath>
 			</field>
 		</record>
+		
+		<record id="view_product_product_form_inherited" model="ir.ui.view">
+			<field name="name">product.product.form.inherited</field>
+			<field name="model">product.product</field>
+			<field name="inherit_id" ref="product.product_normal_form_view" />
+			<field name="arch" type="xml">
+				<xpath expr="//header" position="inside">
+					<button string="Generar codigo de barra" type="object" name="compute_barcode"/>
+				</xpath>
+			</field>
+		</record>
         
   </data>
 </odoo>

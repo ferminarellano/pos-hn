@@ -54,7 +54,6 @@ odoo.define('pos_hn.update_company_fields', function(require){
 		domain: function(self){return [['id','in', self.available_lots_ids]];},
 		loaded: function(self, product_lots){
 			self.product_lots = product_lots;
-			console.log(product_lots);
 		}
 	}]);
 });
@@ -490,9 +489,6 @@ odoo.define('pos_hn.modify_order_name', function(require){
 				}
 			});
 			
-			console.log("Llamando: display_lot_popup");
-			console.log(pack_lot_lines);
-			
             this.pos.gui.show_popup('packlotline-select', {
                 'title': _t('Lot/Serial Number(s) Required'),
                 'pack_lot_lines': pack_lot_lines,
@@ -543,7 +539,6 @@ odoo.define('pos_hn.modify_order_name', function(require){
 			}
 			pack_lot_lines.set_quantity_by_lot();
 			
-			console.log(this.options.pack_lot_lines);
 			this.renderElement();
 			this.focus();
 		},

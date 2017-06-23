@@ -22,5 +22,24 @@
 		  <field name="kind">on_create</field>
 		  <field name="server_action_ids" eval="[(6,0,[ref('generar_codigo_barra_id')])]"/>
 		</record>
+		
+		<record id="consumidor_final_id" model="res.partner">
+		  <field name="name">Consumidor Final</field>
+		  <field name="vat">Consumidor Final</field>
+		</record>
+		
+		<record id="point_of_sale.pos_config_main" model="pos.config">
+		  <field name="default_client" ref="consumidor_final_id"/>
+		  <field name="iface_invoicing" eval="False"/>
+		</record>
+		
+		<record id="l10n_hn.1_impuestos_plantilla_isv_por_pagar" model="account.tax">
+		  <field name="name">ISV 15%</field>
+		</record>
+		
+		<record id="product.decimal_product_uom" model="decimal.precision">
+		  <field name="digits" eval="2"/>
+		</record>
+		
     </data>
 </openerp>

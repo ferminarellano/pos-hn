@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+	
+		<record model="res.country.state" id="atlantida_hn_id">
+			<field name="name">Atlántida</field>
+			<field name="code">01</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>		
+		
+		<record model="res.country.state" id="choluteca_hn_id">
+			<field name="name">Choluteca</field>
+			<field name="code">06</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="colon_hn_id">
+			<field name="name">Colón</field>
+			<field name="code">02</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="comayagua_hn_id">
+			<field name="name">Comayagua</field>
+			<field name="code">03</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="copan_hn_id">
+			<field name="name">Copán</field>
+			<field name="code">04</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="cortes_hn_id">
+			<field name="name">Cortés</field>
+			<field name="code">05</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="elparaiso_hn_id">
+			<field name="name">El Paraiso</field>
+			<field name="code">07</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="franciscomorazan_hn_id">
+			<field name="name">Francisco Morazán</field>
+			<field name="code">08</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="graciasadios_hn_id">
+			<field name="name">Gracias a Dios</field>
+			<field name="code">09</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="intibuca_hn_id">
+			<field name="name">Intibucá</field>
+			<field name="code">10</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="islasdelabahia_hn_id">
+			<field name="name">Islas de la Bahía</field>
+			<field name="code">11</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="lapaz_hn_id">
+			<field name="name">La Paz</field>
+			<field name="code">12</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="lempira_hn_id">
+			<field name="name">Lempira</field>
+			<field name="code">13</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="ocotepeque_hn_id">
+			<field name="name">Ocotepeque</field>
+			<field name="code">14</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="olancho_hn_id">
+			<field name="name">Olancho</field>
+			<field name="code">15</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="santabarbara_hn_id">
+			<field name="name">Santa Bárbara</field>
+			<field name="code">16</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.country.state" id="valle_hn_id">
+			<field name="name">Valle</field>
+			<field name="code">17</field>
+			<field name="country_id" ref="base.hn"/>
+		</record>
+		
+		<record model="res.currency" id="base.HNL">
+			<field name="position">before</field>
+		</record>
+		
+		<record model="res.lang" id="base.lang_es">
+			<field name="thousands_sep">,</field>
+			<field name="decimal_point">.</field>
+		</record>
+		
+	</data>
+</odoo>

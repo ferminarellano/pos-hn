@@ -13,7 +13,7 @@
     'website': "github.com/ferminarellano",
     'category': 'Point Of Sale',
     'version': '0.1',
-    'depends': ['point_of_sale'],
+    'depends': ['point_of_sale','base_action_rule'],
     'data': [
 		'report/ventas_por_categoria/ventas_por_categoria.xml',
 		'report/pos_order_reprint/pos_order_reprint.xml',

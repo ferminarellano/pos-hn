@@ -11,7 +11,7 @@
 				<br />
 				<div >CAI: <t t-esc="widget.pos.config_cai.codigo_cai" /></div>
 				<div>FACTURA: <t t-esc="order.name"/></div>
-                <div>FECHA: <t t-esc="moment().format('L LT')"/></div>
+                <div>FECHA: <t t-esc="moment().format('L hh:mm:ss a')"/></div>
             	<div>CAJERO: <t t-esc="widget.pos.cashier ? widget.pos.cashier.name : widget.pos.user.name"/></div>
             	<div>CLIENTE: <t t-esc="order.get_client_name()"/></div>
             	<div>RTN: <t t-esc="order.get_client().vat"/></div>

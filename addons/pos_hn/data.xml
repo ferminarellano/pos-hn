@@ -23,6 +23,21 @@
 		  <field name="server_action_ids" eval="[(6,0,[ref('generar_codigo_barra_id')])]"/>
 		</record>
 		
+		<record id="actualizar_secuencia_id" model="ir.actions.server">
+		  <field name="name">Generar Secuencia</field>
+		  <field name="model_id" ref="model_poshn_cai"/>
+		  <field name="state">code</field>
+		  <field name="code">record.compute_sequence()</field>
+		</record>
+	
+		<record id="actualizar_secuencia_asa_id" model="base.action.rule">
+		  <field name="name">Generar Secuencia</field>
+		  <field name="model_id" ref="model_poshn_cai"/>
+		  <field name="active">1</field>
+		  <field name="kind">on_create</field>
+		  <field name="server_action_ids" eval="[(6,0,[ref('actualizar_secuencia_id')])]"/>
+		</record>
+		
 		<record id="consumidor_final_id" model="res.partner">
 		  <field name="name">Consumidor Final</field>
 		  <field name="vat">Consumidor Final</field>

@@ -22,22 +22,20 @@
                 <form string="Idea form">
                     <group colspan="4">
                         <group colspan="2" col="2">
-                            <separator string="General stuff" colspan="2"/>
+                            <separator string="Configuración General" colspan="2"/>
                             <field name="codigo_cai"/>
                             <field name="fecha_limite_emision"/>
+							<field name="activo"/>
                         </group>
 
                         <group colspan="2" col="2">
-                           <separator string="Rango Autorizado" colspan="2"/>
-                           <field name="rango_autorizado_desde"/>
+                           <separator string="Enumeración de Documento" colspan="2"/>
+                           <field name="punto_emision"/>
+						   <field name="establecimiento"/>
+                           <field name="tipo_documento"/>
+						   <field name="rango_autorizado_desde"/>
                            <field name="rango_autorizado_hasta"/>
                         </group>
-
-                        <notebook colspan="4">
-                            <page string="Activo">
-                                <field name="activo"/>
-                            </page>
-                        </notebook>
                   </group>
               </form>
             </field>

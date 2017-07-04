@@ -7,9 +7,29 @@ class cai(models.Model):
 
 	codigo_cai = fields.Char(string="CAI", help="Ingrese su Código de Autorización de Impresión en este campo. Este saldrá automaticamente en su factura", size=37)
 	fecha_limite_emision = fields.Date(string="Fecha limite emision", help="Ingrese la fecha limite de emisión para su código CAI")
-	rango_autorizado_desde = fields.Float(digits=(16,0), string="Rango autorizado (desde)", help="Ingrese el rango de facturación autorizado por la DEI.")
-	rango_autorizado_hasta = fields.Float(digits=(16,0), string="Rango autorizado (hasta)")
-	activo = fields.Boolean(string="Código Activo")
+	punto_emision = fields.Char(string="Punto de Emisión", size=3, default="000", help="Ingrese el punto de emisión que aparecera en su secuencia de factura. (000)")
+	establecimiento = fields.Char(string="Establecimiento", size=3, default="001", help="Ingrese el establecimiento que aparecera en su secuencia de factura. (001)")
+	tipo_documento = fields.Char(string="Tipo de Documento", size=2, default="01", help="Ingrese el tipo de documento que aparecera en su secuencia de factura. (01)")
+	rango_autorizado_desde = fields.Float(digits=(8,0), string="Rango autorizado (desde)", help="Ingrese el rango de facturación autorizado por la DEI.")
+	rango_autorizado_hasta = fields.Float(digits=(8,0), string="Rango autorizado (hasta)")
+	activo = fields.Boolean(string="Activo")
+	
+	@api.one
+	def compute_sequence(self):	
+		self.env['ir.sequence'].create({
+			'name':self.codigo_cai+'/'+str(int(self.rango_autorizado_desde))+'-'+str(int(self.rango_autorizado_hasta)),
+			'code': 'regimen.dei',
+			'implementation':'no_gap', 
+			'padding':8, 
+			'number_increment':1,
+			'number_next_actual': int(self.rango_autorizado_desde),
+			'regimen_aplicado':True,
+			'punto_emision':self.punto_emision,
+			'establecimiento':self.establecimiento,
+			'tipo_documento':self.tipo_documento,
+			'rango_desde':int(self.rango_autorizado_desde),
+			'rango_hasta':int(self.rango_autorizado_hasta)
+		})
 
 class ir_sequence(models.Model):
 	_name = 'ir.sequence'

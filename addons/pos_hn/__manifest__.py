@@ -15,6 +15,7 @@
     'version': '0.1',
     'depends': ['l10n_hn','point_of_sale','base_action_rule', 'l10n_hn_point_of_sale'],
     'data': [
+		'security/ir.model.access.csv',
 		'report/ventas_por_categoria/ventas_por_categoria.xml',
 		'report/pos_order_reprint/pos_order_reprint.xml',
 		'report/product_label/product_label.xml',

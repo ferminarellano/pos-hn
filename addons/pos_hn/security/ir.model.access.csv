@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_pos_hn_pos_hn,pos_hn.pos_hn,model_pos_hn_pos_hn,,1,0,0,0
+access_poshncai, poshn.cai,model_poshn_cai,point_of_sale.group_pos_user,1,0,0,0

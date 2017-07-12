@@ -81,13 +81,22 @@
 				</xpath>
 				
 				<xpath expr="//field[@name='active']" position="after">
-					<field name="cai"/>
-				</xpath>
-				
-				<xpath expr="//field[@name='active']" position="after">
 					<field name="default_client"/>
 				</xpath>
 				
+				<xpath expr="//group[@name='features']" position="before">
+					<separator string="Numeración disponible" colspan="4"/>
+					<field name="cai_ids" colspan="4" nolabel="1">
+						<tree string="Numeración">
+							<field name="sequence" widget="handle"/>
+							<field name="codigo_cai"/>
+							<field name="fecha_limite_emision"/>
+							<field name="rango_autorizado_desde"/>
+							<field name="rango_autorizado_hasta"/>
+						</tree>
+					</field>
+				</xpath>
+				 
 			</field>
 		</record>
 		
